@@ -4,8 +4,11 @@ import br.com.algaworks.algamoneyapi.event.RecursoCriadoEvent;
 import br.com.algaworks.algamoneyapi.model.Categoria;
 import br.com.algaworks.algamoneyapi.model.Pessoa;
 import br.com.algaworks.algamoneyapi.repository.PessoaRepository;
+import br.com.algaworks.algamoneyapi.service.PessoaService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,7 @@ public class PessoaResource {
 
     private PessoaRepository pessoaRepository;
     private ApplicationEventPublisher publisher;
+    private PessoaService pessoaService;
 
     @GetMapping
     public List<Pessoa> listar() {
@@ -43,5 +47,16 @@ public class PessoaResource {
         Optional<Pessoa> optionalPessoa = pessoaRepository.findById(codigo);
         return optionalPessoa.isPresent() ?
                 ResponseEntity.ok(optionalPessoa.get()) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long codigo) {
+        pessoaRepository.deleteById(codigo);
+    }
+
+    @PutMapping("/{codigo}")
+    public Pessoa atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
+        return pessoaService.Atualiza(codigo, pessoa);
     }
 }
