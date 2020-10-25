@@ -1,9 +1,11 @@
 package br.com.algaworks.algamoneyapi.resource;
 
+import br.com.algaworks.algamoneyapi.event.RecursoCriadoEvent;
 import br.com.algaworks.algamoneyapi.model.Categoria;
 import br.com.algaworks.algamoneyapi.model.Pessoa;
 import br.com.algaworks.algamoneyapi.repository.PessoaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import java.util.Optional;
 public class PessoaResource {
 
     private PessoaRepository pessoaRepository;
+    private ApplicationEventPublisher publisher;
 
     @GetMapping
     public List<Pessoa> listar() {
@@ -31,9 +34,7 @@ public class PessoaResource {
     @ResponseStatus(HttpStatus.CREATED)
     public Pessoa criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
         Pessoa pessoaSalva = pessoaRepository.save(pessoa);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
-                .buildAndExpand(pessoaSalva.getCodigo()).toUri();
-        response.setHeader("Location", uri.toASCIIString());
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoa.getCodigo()));
         return pessoaSalva;
     }
 
