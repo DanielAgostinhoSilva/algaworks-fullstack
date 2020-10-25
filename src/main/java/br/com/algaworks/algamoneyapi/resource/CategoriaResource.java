@@ -4,6 +4,7 @@ import br.com.algaworks.algamoneyapi.model.Categoria;
 import br.com.algaworks.algamoneyapi.repository.CategoriaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -11,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -35,7 +37,9 @@ public class CategoriaResource {
     }
 
     @GetMapping("/{codigo}")
-    public Categoria buscarPeloCodigo(@PathVariable Long codigo) {
-        return categoriaRepository.findById(codigo).get();
+    public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo) {
+        Optional<Categoria> optionalCategoria = categoriaRepository.findById(codigo);
+        return optionalCategoria.isPresent() ?
+                ResponseEntity.ok(optionalCategoria.get()) : ResponseEntity.notFound().build();
     }
 }
