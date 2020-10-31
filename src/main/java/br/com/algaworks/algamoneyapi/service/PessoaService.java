@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @Service
@@ -14,12 +13,21 @@ public class PessoaService {
 
     private PessoaRepository pessoaRepository;
 
-    @Transactional
-    public Pessoa Atualiza(Long codigo, Pessoa pessoa) {
-        Pessoa pessoaEncontrada = pessoaRepository.findById(codigo).orElseThrow( () -> {
-            throw new EmptyResultDataAccessException(1);
-        });
+    public Pessoa atualizar(Long codigo, Pessoa pessoa) {
+        Pessoa pessoaEncontrada = buscarPessoaPeloCodigo(codigo);
         BeanUtils.copyProperties(pessoa, pessoaEncontrada, "codigo");
         return pessoaRepository.save(pessoaEncontrada);
+    }
+
+    public void atualizarPropriedadeAtivo(Long codigo, Boolean ativo) {
+        Pessoa pessoaSalva = buscarPessoaPeloCodigo(codigo);
+        pessoaSalva.setAtivo(ativo);
+        pessoaRepository.save(pessoaSalva);
+    }
+
+    public Pessoa buscarPessoaPeloCodigo(Long codigo) {
+        return pessoaRepository.findById(codigo).orElseThrow( () -> {
+            throw new EmptyResultDataAccessException(1);
+        });
     }
 }
