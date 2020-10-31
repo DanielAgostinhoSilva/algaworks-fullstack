@@ -37,7 +37,7 @@ public class Lancamento {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo")
-    private TipoLancamento tipoLancamento;
+    private TipoLancamento tipo;
 
     @ManyToOne
     @JoinColumn(name = "codigo_categoria")
