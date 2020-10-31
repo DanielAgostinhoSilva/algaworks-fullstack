@@ -5,6 +5,7 @@ import br.com.algaworks.algamoneyapi.exceptionhandler.AlgamoneyExceptionHandler;
 import br.com.algaworks.algamoneyapi.model.Lancamento;
 import br.com.algaworks.algamoneyapi.model.Pessoa;
 import br.com.algaworks.algamoneyapi.repository.LancamentoRepository;
+import br.com.algaworks.algamoneyapi.repository.filter.LancamentoFilter;
 import br.com.algaworks.algamoneyapi.service.LancamentoService;
 import br.com.algaworks.algamoneyapi.service.exception.PessoaInexistenteOuInativaException;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,8 @@ public class LancamentoResource {
     private MessageSource messageSource;
 
     @GetMapping
-    public List<Lancamento> listar() {
-        return lancamentoRepository.findAll();
+    public List<Lancamento> pesquisar(LancamentoFilter lancamentoFilter) {
+        return lancamentoRepository.filtrar(lancamentoFilter);
     }
 
     @GetMapping("/{codigo}")
