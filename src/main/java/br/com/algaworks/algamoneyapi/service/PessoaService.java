@@ -16,10 +16,20 @@ public class PessoaService {
 
     @Transactional
     public Pessoa Atualiza(Long codigo, Pessoa pessoa) {
-        Pessoa pessoaEncontrada = pessoaRepository.findById(codigo).orElseThrow( () -> {
-            throw new EmptyResultDataAccessException(1);
-        });
+        Pessoa pessoaEncontrada = this.buscarOuFalhar(codigo);
         BeanUtils.copyProperties(pessoa, pessoaEncontrada, "codigo");
         return pessoaRepository.save(pessoaEncontrada);
+    }
+
+    @Transactional
+    public void ativar(Long codigo, Boolean ativo) {
+        Pessoa pessoa = buscarOuFalhar(codigo);
+        pessoa.setAtivo(ativo);
+    }
+
+    public Pessoa buscarOuFalhar(Long codigo) {
+        return  pessoaRepository.findById(codigo).orElseThrow( () -> {
+            throw new EmptyResultDataAccessException(1);
+        });
     }
 }
