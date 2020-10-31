@@ -57,6 +57,12 @@ public class PessoaResource {
 
     @PutMapping("/{codigo}")
     public Pessoa atualizar(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
-        return pessoaService.Atualiza(codigo, pessoa);
+        return pessoaService.atualizar(codigo, pessoa);
+    }
+
+    @PutMapping("/{codigo}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void atualizarPropriedadeAtivo(@PathVariable Long codigo, @RequestBody Boolean ativo) {
+        pessoaService.atualizarPropriedadeAtivo(codigo, ativo);
     }
 }
