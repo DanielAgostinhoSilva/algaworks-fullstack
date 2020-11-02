@@ -2,9 +2,9 @@ package br.com.algaworks.algamoneyapi.repository.lancamento;
 
 import br.com.algaworks.algamoneyapi.model.Lancamento;
 import br.com.algaworks.algamoneyapi.repository.filter.LancamentoFilter;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface LancamentoRepositoryQuery {
-    List<Lancamento> filtrar(LancamentoFilter lancamentoFilter);
+    Page<Lancamento> filtrar(LancamentoFilter lancamentoFilter, Pageable pageable);
 }
