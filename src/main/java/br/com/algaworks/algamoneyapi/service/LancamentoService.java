@@ -26,4 +26,15 @@ public class LancamentoService {
 
         return lancamentoRepository.save(lancamento);
     }
+
+    public void removerLancamento(Long codigo) {
+        Lancamento lancamento = this.buscarOuFalhar(codigo);
+        lancamentoRepository.delete(lancamento);
+    }
+
+    public Lancamento buscarOuFalhar(Long codigo) {
+        return lancamentoRepository.findById(codigo).orElseThrow( () -> {
+            throw new EmptyResultDataAccessException(1);
+        });
+    }
 }
