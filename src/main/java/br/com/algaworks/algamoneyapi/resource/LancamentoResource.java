@@ -63,4 +63,10 @@ public class LancamentoResource {
 
     }
 
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long codigo) {
+        this.lancamentoService.removerLancamento(codigo);
+    }
+
 }
