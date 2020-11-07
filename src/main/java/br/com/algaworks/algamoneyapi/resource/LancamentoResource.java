@@ -6,6 +6,7 @@ import br.com.algaworks.algamoneyapi.model.Lancamento;
 import br.com.algaworks.algamoneyapi.model.Pessoa;
 import br.com.algaworks.algamoneyapi.repository.LancamentoRepository;
 import br.com.algaworks.algamoneyapi.repository.filter.LancamentoFilter;
+import br.com.algaworks.algamoneyapi.repository.projection.ResumoLancamento;
 import br.com.algaworks.algamoneyapi.service.LancamentoService;
 import br.com.algaworks.algamoneyapi.service.exception.PessoaInexistenteOuInativaException;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,12 @@ public class LancamentoResource {
     @PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
     public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
         return lancamentoRepository.filtrar(lancamentoFilter, pageable);
+    }
+
+    @GetMapping(params = "resumo")
+    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+    public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+        return lancamentoRepository.resumir(lancamentoFilter, pageable);
     }
 
     @GetMapping("/{codigo}")
