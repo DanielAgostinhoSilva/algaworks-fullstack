@@ -27,6 +27,12 @@ public class LancamentoService {
         return lancamentoRepository.save(lancamento);
     }
 
+    public Lancamento atualizar(Long codigo, Lancamento lancamento) {
+        Lancamento lancamentoEncontrado = this.buscarOuFalhar(codigo);
+        BeanUtils.copyProperties(lancamento, lancamentoEncontrado, "codigo");
+        return this.salvar(lancamento);
+    }
+
     public void removerLancamento(Long codigo) {
         Lancamento lancamento = this.buscarOuFalhar(codigo);
         lancamentoRepository.delete(lancamento);

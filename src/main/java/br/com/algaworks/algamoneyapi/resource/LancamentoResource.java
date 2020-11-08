@@ -83,4 +83,11 @@ public class LancamentoResource {
         this.lancamentoService.removerLancamento(codigo);
     }
 
+    @PutMapping("/{codigo}")
+    @PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
+    public Lancamento atualizar(@PathVariable Long codigo, @Valid @RequestBody Lancamento lancamento) {
+        return this.lancamentoService.atualizar(codigo, lancamento);
+    }
+
+
 }
