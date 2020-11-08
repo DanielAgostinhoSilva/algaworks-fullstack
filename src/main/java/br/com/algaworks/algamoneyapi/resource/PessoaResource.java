@@ -4,11 +4,14 @@ import br.com.algaworks.algamoneyapi.event.RecursoCriadoEvent;
 import br.com.algaworks.algamoneyapi.model.Categoria;
 import br.com.algaworks.algamoneyapi.model.Pessoa;
 import br.com.algaworks.algamoneyapi.repository.PessoaRepository;
+import br.com.algaworks.algamoneyapi.repository.filter.PessoaFilter;
 import br.com.algaworks.algamoneyapi.service.PessoaService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,8 +35,8 @@ public class PessoaResource {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
-    public List<Pessoa> listar() {
-        return pessoaRepository.findAll();
+    public Page<Pessoa> listar(PessoaFilter pessoaFilter, Pageable pageable) {
+        return pessoaRepository.filtrar(pessoaFilter, pageable);
     }
 
     @PostMapping
